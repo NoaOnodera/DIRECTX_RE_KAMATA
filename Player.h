@@ -10,6 +10,7 @@
 #include "PlayerBullet.h"
 #include <memory>
 #include <list>
+#include <string>
 class Player
 {
 public:
@@ -28,7 +29,7 @@ private:
 	DebugText* debugText_ = nullptr;//デバッグテキスト
 	MyMath* myMath_ = nullptr;//自作の数学関数
 	VectorMove* vectorMove_ = nullptr;//行列の計算
-	//std::list<std::unique_ptr<PlayerBullet>>playerBullets_;//自弾のユニークポインター
+	std::list<std::unique_ptr<PlayerBullet>>playerBullets_;//自弾のユニークポインター
 	PlayerBullet* playerBullet_ = nullptr;//弾
 };
 

@@ -2,6 +2,9 @@
 #include <cassert>
 #include"Player.h"
 #include"MyMath.h"
+#include <iostream>
+#include <string>
+#include <vector>
 
 Player::Player() {
 
@@ -73,8 +76,8 @@ void Player::Update() {
 
 		Attack();//ƒLƒƒƒ‰ƒNƒ^[‚ÌUŒ‚ˆ—
 
-		if (playerBullet_) {
-			playerBullet_->Update();
+		for (std::unique_ptr<PlayerBullet>& PlayerBullet : playerBullets_) {
+			PlayerBullet->Update();
 		}
 	}
 	worldTransform_.TransferMatrix();
@@ -83,22 +86,20 @@ void Player::Update() {
 void Player::Draw(ViewProjection& viewProjection) {
 	model_->Draw(worldTransform_, viewProjection, textureHandle_);
 	//’e•`‰æ
-	if (playerBullet_) {
-	    playerBullet_->Draw(viewProjection);
+	for (std::unique_ptr<PlayerBullet>& PlayerBullet : playerBullets_) {
+		PlayerBullet->Draw(viewProjection);
 	}
 }
 
 void Player::Attack() {
 	if (input_->PushKey(DIK_SPACE))
 	{
+		Vector3 position = worldTransform_.translation_;
 		//’e‚ğ¶¬‚µA‰Šú‰»
-		PlayerBullet* newBullet = new PlayerBullet();
-
-
-
+		std::unique_ptr<PlayerBullet>newBullet = std::make_unique<PlayerBullet>();
 		newBullet->Initialize(model_, worldTransform_.translation_);
 
 		//’e‚ğ“o˜^‚·‚é
-		playerBullet_ = newBullet;
+		playerBullets_.push_back(std::move(newBullet));
 	}
 }
