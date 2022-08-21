@@ -1,16 +1,15 @@
 ﻿#include "GameScene.h"
 #include "TextureManager.h"
-#include "AxisIndicator.h"
-#include "PrimitiveDrawer.h"
 #include <cassert>
+#include "Player.h"
+#include "MyMath.h"
 
 
 
 GameScene::GameScene() {}
 
 GameScene::~GameScene() {
-	delete model_;
-	delete debugCamera_;
+	delete player_;
 }
 
 void GameScene::Initialize() {
@@ -22,16 +21,22 @@ void GameScene::Initialize() {
 	textureHandle_ = TextureManager::Load("mario.jpg");
 	model_ = Model::Create();
 	debugCamera_ = new DebugCamera(1280,720);
-	AxisIndicator::GetInstance()->SetVisible(TRUE);//軸方向表示の表示を有効にする
-	AxisIndicator::GetInstance()->SetTargetViewProjection(&debugCamera_->GetViewProjection());//軸方向表示が参照するビュープロジェクションを指定する（アドレス渡し）
+	worldTransform_.Initialize();//ワールドトランスフォームの初期化
+	viewProjection_.Initialize();//ビュープロジェクションの初期化
+	viewProjection_.eye = { 0,0,-50 };
 
-	PrimitiveDrawer::GetInstance()->SetViewProjection(&debugCamera_->GetViewProjection());//ライン描画が参照するビュープロジェクションを指定する（アドレス渡し）
-	worldTransform_->Initialize();//ワールドトランスフォームの初期化
-	ViewProjection_->Initialize();//ビュープロジェクションの初期化
+	player_ = new Player();//自キャラの生成
+
+	player_->Initialize(model_,textureHandle_);
+
 }
 
 void GameScene::Update() {
 	debugCamera_->Update();//デバッグカメラの更新
+	
+	player_->Update();//自キャラの更新
+	debugText_->SetPos(50, 70);
+	debugText_->Printf("eye:(%f,%f,%f)", viewProjection_.eye.x, viewProjection_.eye.y, viewProjection_.eye.z);
 }
 
 void GameScene::Draw() {
@@ -60,7 +65,7 @@ void GameScene::Draw() {
 	/// <summary>
 	/// ここに3Dオブジェクトの描画処理を追加できる
 	/// </summary>
-
+	player_->Draw(viewProjection_);//自キャラの描画
 	// 3Dオブジェクト描画後処理
 	Model::PostDraw();
 #pragma endregion
