@@ -25,6 +25,15 @@ void Player::Initialize(Model* model, uint32_t textureHandle) {
 	myMath_ = new MyMath();
 }
 
+void Player::Rotate() {
+	const float kRotateSpeed = 0.05f;
+	if (input_->PushKey(DIK_Q)) {
+		worldTransform_.rotation_.y -= kRotateSpeed;
+	}
+	else if (input_->PushKey(DIK_E)) {
+		worldTransform_.rotation_.y += kRotateSpeed;
+	}
+}
 void Player::Update() {
 	{
 		Vector3 move = { 0,0,0 };
@@ -59,10 +68,37 @@ void Player::Update() {
 
 		//ƒLƒƒƒ‰ƒNƒ^[‚ÌÀ•W‚ð‰æ–Ê•\Ž¦‚·‚éˆ—
 		vectorMove_->MyUpdate(worldTransform_);
+	    
+		Rotate();
+
+		Attack();//ƒLƒƒƒ‰ƒNƒ^[‚ÌUŒ‚ˆ—
+
+		if (playerBullet_) {
+			playerBullet_->Update();
+		}
 	}
 	worldTransform_.TransferMatrix();
 }
 
 void Player::Draw(ViewProjection& viewProjection) {
 	model_->Draw(worldTransform_, viewProjection, textureHandle_);
+	//’e•`‰æ
+	if (playerBullet_) {
+	    playerBullet_->Draw(viewProjection);
+	}
+}
+
+void Player::Attack() {
+	if (input_->PushKey(DIK_SPACE))
+	{
+		//’e‚ð¶¬‚µA‰Šú‰»
+		PlayerBullet* newBullet = new PlayerBullet();
+
+
+
+		newBullet->Initialize(model_, worldTransform_.translation_);
+
+		//’e‚ð“o˜^‚·‚é
+		playerBullet_ = newBullet;
+	}
 }
