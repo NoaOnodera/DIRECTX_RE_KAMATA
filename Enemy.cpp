@@ -1,13 +1,14 @@
 #include "Enemy.h"
 #include <cassert>
+#include "Player.h"
+#include "VectorMove.h"
 
 Enemy::Enemy() {
 
 }
 
 Enemy::~Enemy() {
-	delete vectorMove_;
-	delete myMath_;
+
 }
 
 void Enemy::Initialize(Model* model, uint32_t texureHandle) {
@@ -23,6 +24,8 @@ void Enemy::Initialize(Model* model, uint32_t texureHandle) {
 	debugText_ = DebugText::GetInstance();
 	//ワールドトランスフォームの初期化
 	worldTransform_.Initialize();
+
+	vectorMove_ = new VectorMove();
 
 	myMath_ = new MyMath();
 	//引数で受け取った初期座標をセット
@@ -74,15 +77,18 @@ void Enemy::ApprochMove() {
 	}
 
 	for (std::unique_ptr<EnemyBullet>& EnemyBullet : enemyBullets_) {
-		EnemyBullet->Update();
+		if (EnemyBullet) {
+			EnemyBullet->Update();
+		}
 	}
-	//行列更新
-	//行列の転送
-	worldTransform_.TransferMatrix();
+
 
 	if (worldTransform_.translation_.z < 0.0f) {
 		phase_ = Phase::Leave;
 	}
+	//行列更新
+	//行列の転送
+	worldTransform_.TransferMatrix();
 }
 
 void Enemy::Move() {
@@ -125,20 +131,37 @@ void Enemy::Draw(const ViewProjection& viewProjection) {
 	model_->Draw(worldTransform_, viewProjection, textureHandle_);
 
 	for (std::unique_ptr<EnemyBullet>& EnemyBullet : enemyBullets_) {
-		EnemyBullet->Draw(viewProjection);
+		if (EnemyBullet) {
+			EnemyBullet->Draw(viewProjection);
+		}
 	}
+}
+
+Vector3 Enemy::GetWorldPosition()
+{
+	Vector3 worldPos;
+
+	worldPos.x = worldTransform_.translation_.x;
+	worldPos.y = worldTransform_.translation_.y;
+	worldPos.z = worldTransform_.translation_.z;
+
+	return worldPos;
+
 }
 
 void Enemy::Fire()
 {
+	assert(player_);
 	//弾の速度
-	const float eBulletSpeed = 1.0f;
-	Vector3 velocity(0, 0, -eBulletSpeed);
-	//弾を生成し、初期化
-	//PlayerBullet* newBullet = new PlayerBullet();
-	Vector3 position = worldTransform_.translation_;
-	//速度ベクトルを自機の向きに合わせて回転させる
-	velocity = MathUtility::Vector3TransformNormal(velocity, worldTransform_.matWorld_);
+	const float eBulletSpeed = 0.01f;
+	Vector3 playerVec = player_->GetWorldPosition();
+	Vector3 enemyVec = GetWorldPosition();
+	Vector3 Difference = playerVec;
+	Difference -= enemyVec;
+	Vector3 normalize(Difference);
+	Difference *= eBulletSpeed;
+	Vector3 velocity(Difference);
+
 	//弾を生成し、初期化
 	std::unique_ptr<EnemyBullet> newBullet = std::make_unique<EnemyBullet>();
 	newBullet->Initialize(model_, worldTransform_.translation_, velocity);

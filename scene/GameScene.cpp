@@ -3,7 +3,7 @@
 #include <cassert>
 #include "Player.h"
 #include "MyMath.h"
-
+#include"EnemyBullet.h"
 
 
 GameScene::GameScene() {}
@@ -26,9 +26,9 @@ void GameScene::Initialize() {
 	viewProjection_.eye = { 0,0,-50 };
 
 	player_ = std::make_unique<Player>();
-	player_->Initialize(model_,textureHandle_);
-    
 	enemy_ = std::make_unique<Enemy>();
+	enemy_->SetPlayer(player_.get());
+	player_->Initialize(model_,textureHandle_);
 	enemy_->Initialize(model_, textureHandle_);
 }
 

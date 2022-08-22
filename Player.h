@@ -21,6 +21,7 @@ public:
 	void Update();
 	void Draw(ViewProjection&viewProjection);
 	void Attack();
+	Vector3 GetWorldPosition();
 private:
 	WorldTransform worldTransform_;//ワールド変換データ
 	Model* model_ = nullptr;//モデル
@@ -30,6 +31,5 @@ private:
 	MyMath* myMath_ = nullptr;//自作の数学関数
 	VectorMove* vectorMove_ = nullptr;//行列の計算
 	std::list<std::unique_ptr<PlayerBullet>>playerBullets_;//自弾のユニークポインター
-	PlayerBullet* playerBullet_ = nullptr;//弾
 };
 

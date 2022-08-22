@@ -12,6 +12,8 @@
 #include <memory>
 #include <list>
 
+class Player;//プレイヤーの前方宣言
+
 enum class Phase {
 	Approch,//接近する
 	Leave,//離脱する
@@ -29,6 +31,8 @@ public:
 	void ApprochMove();
 	void LeaveMove();
 	void Fire();
+	void SetPlayer(Player* player) { player_ = player; }
+	Vector3 GetWorldPosition();
 
 	static const int kFireInterval = 60;//発射感覚
 private:
@@ -47,6 +51,8 @@ private:
 	VectorMove* vectorMove_ = nullptr;
     //フェーズ
 	Phase phase_ = Phase::Approch;
+
+	Player* player_ = nullptr;
 
 	std::list<std::unique_ptr<EnemyBullet>>enemyBullets_;
 

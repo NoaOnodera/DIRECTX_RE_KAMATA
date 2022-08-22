@@ -12,6 +12,7 @@
 #include "Player.h"
 #include "MyMath.h"
 #include "Enemy.h"
+#include"EnemyBullet.h"
 
 
 /// <summary>
@@ -57,6 +58,7 @@ class GameScene {
 	DebugCamera* debugCamera_ = nullptr;//デバックカメラ
 	std::unique_ptr<Player>player_;//自キャラ
 	std::unique_ptr<Enemy>enemy_;//敵キャラ
+	std::unique_ptr<EnemyBullet>enemyBullet_;
 	bool isDebugCameraActive_ = FALSE;
 	/// <summary>
 	/// ゲームシーン用
