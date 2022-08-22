@@ -1,4 +1,5 @@
 #pragma once
+#include "Model.h"
 #include "WorldTransform.h"
 #include "DebugText.h"
 #include "Input.h"
@@ -10,29 +11,59 @@
 #include "PlayerBullet.h"
 #include <memory>
 #include <list>
-#include <string>
-class Player
-{
-public:
-	Player();//コンストラクター
-	~Player();//デストラクター
-	void Rotate();
-	void Initialize(Model*model,uint32_t textureHandle);//初期化
-	void Update();
-	void Draw(ViewProjection&viewProjection);
-	void Attack();
-	Vector3 GetWorldPosition();
-	void OnCollision();
-	Vector3 GetRadius();
-	const std::list<std::unique_ptr<PlayerBullet>>& GetBullets() { return playerBullets_; }
-private:
-	WorldTransform worldTransform_;//ワールド変換データ
-	Model* model_ = nullptr;//モデル
-	uint32_t textureHandle_ = 0u;//テクスチャハンドル
-	Input* input_ = nullptr;//入力処理をするため
-	DebugText* debugText_ = nullptr;//デバッグテキスト
-	MyMath* myMath_ = nullptr;//自作の数学関数
-	VectorMove* vectorMove_ = nullptr;//行列の計算
-	std::list<std::unique_ptr<PlayerBullet>>playerBullets_;//自弾のユニークポインター
-};
+#include "Vector3.h"
 
+
+class Player {
+public:
+
+
+	Player();
+	~Player();
+	void Rotate();
+	void Initialize(Model* model, uint32_t textureHandle);
+	void Update();
+	void Draw(ViewProjection& viewProjection);
+	void Attack();
+
+	//衝突を検出したら呼び出しされるコールバック関数
+	void OnCollision();
+
+	Vector3 direction(const Vector3& velocity, const Matrix4& matWorld);
+	Vector3 GetWorldPosition();
+	Vector3 GetRadius();
+
+
+
+	//弾リストを取得
+	const std::list<std::unique_ptr<PlayerBullet>>& GetBullets() { return playerbullets_; }
+	void setRailCamera(const WorldTransform& worldTransform) { worldTransform_.parent_ = &worldTransform; }
+private:
+
+
+	//ワールド変換データ
+	WorldTransform worldTransform_;
+	//モデル
+	Model* model_ = nullptr;
+	//テクスチャハンドル
+	uint32_t textureHandle_ = 0u;
+	//入力処理をするため
+	Input* input_ = nullptr;
+	//デバッグテキスト
+	DebugText* debugText_ = nullptr;
+
+	MyMath* myMath_ = nullptr;
+
+
+
+
+
+	VectorMove* vectorMove_ = nullptr;
+
+
+	std::list<std::unique_ptr<PlayerBullet>>playerbullets_;
+
+
+
+
+};

@@ -20,6 +20,6 @@ private:
 	Model* model_ = nullptr;
 
 	VectorMove* vectorMove_ = nullptr;
-	
+	//デバッグテキスト
 	DebugText* debugText_ = nullptr;
 };

@@ -1,7 +1,18 @@
 #include<cmath>
 #include "Vector3.h"
 
-
+//Vector3::Vector3()
+//    :x(0), y(0), z(0)
+//{
+//
+//}
+//
+//Vector3::Vector3(float x, float y, float z)
+//    : x(x), y(y), z(z)
+//{
+//
+//}
+//
 float Vector3::length() const
 {
     return sqrt(x * x + y * y + z * z);
@@ -34,6 +45,52 @@ Vector3 Vector3::cross(const Vector3& v)const
     temp.z = this->x - v.y - this->y * v.x;
     return temp;
 }
+//
+//
+//Vector3 Vector3::operator+()const
+//{
+//    return *this;
+//}
+//
+//Vector3 Vector3::operator-()const
+//{
+//    return Vector3(*this);
+//}
+//
+//Vector3& Vector3::operator+=(const Vector3& v)
+//{
+//    this->x += v.x;
+//    this->y += v.y;
+//    this->z += v.z;
+//    return *this;
+//}
+//
+//
+//Vector3& Vector3::operator-=(const Vector3& v)
+//{
+//    this->x -= v.x;
+//    this->y -= v.y;
+//    this->z -= v.z;
+//    return *this;
+//}
+//
+//
+//Vector3& Vector3::operator*=(float s)
+//{
+//    this->x *= s;
+//    this->y *= s;
+//    this->z *= s;
+//    return *this;
+//}
+//
+//Vector3& Vector3::operator/=(float s)
+//{
+//    this->x /= s;
+//    this->y /= s;
+//    this->z /= s;
+//    return *this;
+//}
+//
 
 //Vector2 ƒNƒ‰ƒX‚É‘®‚³‚È‚¢ŠÖ”ŒQ
 //“ñ€‰‰Zq

@@ -1,6 +1,8 @@
-#include "Enemy.h"
+
 #include "EnemyBullet.h"
 #include<cassert>
+
+
 
 EnemyBullet::EnemyBullet() {
 
@@ -8,7 +10,7 @@ EnemyBullet::EnemyBullet() {
 
 
 EnemyBullet::~EnemyBullet() {
-	
+
 }
 
 void EnemyBullet::Initialize(Model* model, const Vector3& position, const Vector3& velocity) {
@@ -17,7 +19,8 @@ void EnemyBullet::Initialize(Model* model, const Vector3& position, const Vector
 
 	model_ = model;
 	//テクスチャ読み込み
-	textureHandle_ = TextureManager::Load("enemyBullet.jpg");
+	textureHandle_ = TextureManager::Load("player_bullet.jpg");
+
 
 	//ワールドトランスフォームの初期化
 	worldTransform_.Initialize();
@@ -37,11 +40,10 @@ void EnemyBullet::Update() {
 	worldTransform_.translation_ += velocity_;
 	//時間経過でdeath
 	if (--deathTimer_ <= 0) {
-		isDead_ = TRUE;
+		isDead_ = true;
 	}
 
 }
-
 void EnemyBullet::Draw(const ViewProjection& viewProjection) {
 	//モデルの描画
 	model_->Draw(worldTransform_, viewProjection, textureHandle_);

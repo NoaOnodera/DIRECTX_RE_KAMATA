@@ -1,4 +1,4 @@
-#include "SkyDome.h"
+#include "Skydome.h"
 #include <cassert>
 Skydome::Skydome()
 {
@@ -21,7 +21,7 @@ void Skydome::Initialize(Model* model)
 	debugText_ = DebugText::GetInstance();
 
 	worldTransform_.translation_ = { 0,0,0 };
-	worldTransform_.scale_ = { 5000,5000,5000 };
+	worldTransform_.scale_ = { 50,50,50 };
 }
 
 

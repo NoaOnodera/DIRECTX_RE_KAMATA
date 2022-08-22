@@ -14,7 +14,8 @@
 #include "Enemy.h"
 #include "EnemyBullet.h"
 #include "Skydome.h"
-#include"Collider.h"
+#include "RailCamera.h"
+#include "Collider.h"
 
 /// <summary>
 /// ゲームシーン
@@ -53,9 +54,9 @@ class GameScene {
 	DirectXCommon* dxCommon_ = nullptr;
 	Input* input_ = nullptr;
 	Audio* audio_ = nullptr;
+	Model* model_ = nullptr;//3Dモデル
 	DebugText* debugText_ = nullptr;
 	uint32_t textureHandle_ = 0;//テクスチャハンドル
-	Model* model_ = nullptr;//3Dモデル
 	WorldTransform  worldTransform_;//ワールドトランスフォーム
 	ViewProjection  viewProjection_;//ビュープロジェクション
 	DebugCamera* debugCamera_ = nullptr;//デバックカメラ
@@ -63,6 +64,7 @@ class GameScene {
 	std::unique_ptr<Player>player_;//自キャラ
 	std::unique_ptr<Enemy>enemy_;//敵キャラ
 	std::unique_ptr<EnemyBullet>enemyBullet_;
+	std::unique_ptr<RailCamera>railCamera_;
 	Skydome* skydome_ = nullptr;
 	Model* modelSkydome_ = nullptr;
 	bool isDebugCameraActive_ = FALSE;
