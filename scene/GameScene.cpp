@@ -9,7 +9,7 @@
 GameScene::GameScene() {}
 
 GameScene::~GameScene() {
-	delete player_;
+	
 }
 
 void GameScene::Initialize() {
@@ -25,16 +25,18 @@ void GameScene::Initialize() {
 	viewProjection_.Initialize();//ビュープロジェクションの初期化
 	viewProjection_.eye = { 0,0,-50 };
 
-	player_ = new Player();//自キャラの生成
-
+	player_ = std::make_unique<Player>();
 	player_->Initialize(model_,textureHandle_);
-
+    
+	enemy_ = std::make_unique<Enemy>();
+	enemy_->Initialize(model_, textureHandle_);
 }
 
 void GameScene::Update() {
 	debugCamera_->Update();//デバッグカメラの更新
 	
 	player_->Update();//自キャラの更新
+	enemy_->Update();//敵キャラの更新
 	debugText_->SetPos(50, 70);
 	debugText_->Printf("eye:(%f,%f,%f)", viewProjection_.eye.x, viewProjection_.eye.y, viewProjection_.eye.z);
 }
@@ -66,6 +68,7 @@ void GameScene::Draw() {
 	/// ここに3Dオブジェクトの描画処理を追加できる
 	/// </summary>
 	player_->Draw(viewProjection_);//自キャラの描画
+	enemy_->Draw(viewProjection_);//敵キャラの描画
 	// 3Dオブジェクト描画後処理
 	Model::PostDraw();
 #pragma endregion

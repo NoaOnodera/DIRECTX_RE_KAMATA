@@ -11,6 +11,7 @@
 #include "DebugCamera.h"
 #include "Player.h"
 #include "MyMath.h"
+#include "Enemy.h"
 
 
 /// <summary>
@@ -54,7 +55,9 @@ class GameScene {
 	WorldTransform  worldTransform_;//ワールドトランスフォーム
 	ViewProjection  viewProjection_;//ビュープロジェクション
 	DebugCamera* debugCamera_ = nullptr;//デバックカメラ
-	Player* player_ = nullptr;//自キャラ
+	std::unique_ptr<Player>player_;//自キャラ
+	std::unique_ptr<Enemy>enemy_;//敵キャラ
+	bool isDebugCameraActive_ = FALSE;
 	/// <summary>
 	/// ゲームシーン用
 	/// </summary>
