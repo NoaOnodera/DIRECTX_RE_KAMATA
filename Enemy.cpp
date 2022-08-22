@@ -40,10 +40,59 @@ void Enemy::Move() {
 	worldTransform_.TransferMatrix();
 }
 
+void Enemy::LeaveMove() {
+	//キャラクターの移動ベクトル
+	Vector3 move = { 0,0,0 };
+
+	//キャラクターの移動速さ
+	const float kCharacterSpeed = 0.1f;
+
+	move = { -kCharacterSpeed,-kCharacterSpeed,0 };
+
+	worldTransform_.translation_ += move;
+
+	vectorMove_->MyUpdate(worldTransform_);
+
+	//行列更新
+	//行列の転送
+	worldTransform_.TransferMatrix();
+}
+
+void Enemy::ApprochMove() {
+	//キャラクターの移動ベクトル
+	Vector3 move = { 0,0,0 };
+
+	//キャラクターの移動速さ
+	const float kCharacterSpeed = 0.1f;
+
+	move = { 0,0,-kCharacterSpeed };
+
+	worldTransform_.translation_ += move;
+
+	vectorMove_->MyUpdate(worldTransform_);
+
+	//行列更新
+	//行列の転送
+	worldTransform_.TransferMatrix();
+
+	if (worldTransform_.translation_.z < 0.0f) {
+		phase_ = Phase::Leave;
+	}
+}
+
 void Enemy::Update() {
-	Move();
+	switch (phase_) {
+	case Phase::Approch:
+	default:
+		//規定の位置に到達したら離脱
+		ApprochMove();
+		break;
+	case Phase::Leave:
+		LeaveMove();
+		break;
+	}
 }
 
 void Enemy::Draw(const ViewProjection& viewProjection) {
-	model_->Draw(worldTransform_,viewProjection,textureHandle_);
+	model_->Draw(worldTransform_, viewProjection, textureHandle_);
 }
