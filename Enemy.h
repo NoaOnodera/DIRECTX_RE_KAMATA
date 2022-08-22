@@ -1,11 +1,22 @@
 #pragma once
 #include "Model.h"
+#include "WorldTransform.h"
 #include "DebugText.h"
+#include "Input.h"
+#include "WorldTransform.h"
+#include "ViewProjection.h"
+#include "TextureManager.h"
 #include "VectorMove.h"
+#include "MyMath.h"
+#include "EnemyBullet.h"
+#include <memory>
+#include <list>
+
 enum class Phase {
 	Approch,//接近する
 	Leave,//離脱する
 };
+
 class Enemy
 {
 public:
@@ -17,6 +28,9 @@ public:
 	void Draw(const ViewProjection& viewProjection);
 	void ApprochMove();
 	void LeaveMove();
+	void Fire();
+
+	static const int kFireInterval = 60;//発射感覚
 private:
 	WorldTransform worldTransform_;//ワールド変換データ
 
@@ -24,8 +38,18 @@ private:
 
 	uint32_t textureHandle_ = 0u;//テクスチャハンドル
 
+	DebugText* debugText_ = nullptr;//デバッグテキスト
+
+	MyMath* myMath_ = nullptr;//数学関数
+
+	int32_t eFireTime = 60;
+
 	VectorMove* vectorMove_ = nullptr;
     //フェーズ
 	Phase phase_ = Phase::Approch;
+
+	std::list<std::unique_ptr<EnemyBullet>>enemyBullets_;
+
+	EnemyBullet* enemyBullet_ = nullptr;
 };
 
