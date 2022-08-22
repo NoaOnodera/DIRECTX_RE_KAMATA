@@ -22,6 +22,9 @@ public:
 	void Draw(ViewProjection&viewProjection);
 	void Attack();
 	Vector3 GetWorldPosition();
+	void OnCollision();
+	Vector3 GetRadius();
+	const std::list<std::unique_ptr<PlayerBullet>>& GetBullets() { return playerBullets_; }
 private:
 	WorldTransform worldTransform_;//ワールド変換データ
 	Model* model_ = nullptr;//モデル

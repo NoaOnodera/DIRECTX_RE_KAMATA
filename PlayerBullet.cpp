@@ -8,7 +8,7 @@ PlayerBullet::PlayerBullet() {
 
 
 PlayerBullet::~PlayerBullet() {
-	delete vectorMove_;
+	
 }
 
 void PlayerBullet::Initialize(Model* model, const Vector3& position, const Vector3& velocity) {
@@ -37,7 +37,36 @@ void PlayerBullet::Update() {
 		isDead_ = TRUE;
 	}
 }
+
 void PlayerBullet::Draw(const ViewProjection& viewProjection) {
 	//ƒ‚ƒfƒ‹‚Ì•`‰æ
 	model_->Draw(worldTransform_, viewProjection, textureHandle_);
+}
+
+void PlayerBullet::OnCollision()
+{
+	isDead_ = TRUE;
+}
+
+Vector3 PlayerBullet::GetRadius()
+{
+	Vector3 playerRadius;
+
+	playerRadius.x = worldTransform_.scale_.x / 2;
+	playerRadius.y = worldTransform_.scale_.y / 2;
+	playerRadius.z = worldTransform_.scale_.z / 2;
+
+	return playerRadius;
+}
+
+Vector3 PlayerBullet::GetWorldPosition()
+{
+	Vector3 worldPos;
+
+	worldPos.x = worldTransform_.translation_.x;
+	worldPos.y = worldTransform_.translation_.y;
+	worldPos.z = worldTransform_.translation_.z;
+
+	return worldPos;
+
 }

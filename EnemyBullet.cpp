@@ -41,7 +41,36 @@ void EnemyBullet::Update() {
 	}
 
 }
+
 void EnemyBullet::Draw(const ViewProjection& viewProjection) {
 	//ƒ‚ƒfƒ‹‚Ì•`‰æ
 	model_->Draw(worldTransform_, viewProjection, textureHandle_);
+}
+
+void EnemyBullet::OnCollision()
+{
+	isDead_ = TRUE;
+}
+
+Vector3 EnemyBullet::GetWorldPosition()
+{
+	Vector3 worldPos;
+
+	worldPos.x = worldTransform_.translation_.x;
+	worldPos.y = worldTransform_.translation_.y;
+	worldPos.z = worldTransform_.translation_.z;
+
+	return worldPos;
+
+}
+
+Vector3 EnemyBullet::GetRadius()
+{
+	Vector3 enemyRadius;
+
+	enemyRadius.x = worldTransform_.scale_.x / 2;
+	enemyRadius.y = worldTransform_.scale_.y / 2;
+	enemyRadius.z = worldTransform_.scale_.z / 2;
+
+	return enemyRadius;
 }

@@ -83,9 +83,7 @@ void Enemy::ApprochMove() {
 	}
 
 
-	if (worldTransform_.translation_.z < 0.0f) {
-		phase_ = Phase::Leave;
-	}
+	
 	//s—ñXV
 	//s—ñ‚Ì“]‘—
 	worldTransform_.TransferMatrix();
@@ -168,4 +166,20 @@ void Enemy::Fire()
 
 	//’e‚ð“o˜^‚·‚é
 	enemyBullets_.push_back(std::move(newBullet));
+}
+
+void Enemy::OnCollision()
+{
+
+}
+
+Vector3 Enemy::GetRadius()
+{
+	Vector3 enemyRadius;
+
+	enemyRadius.x = worldTransform_.scale_.x / 2;
+	enemyRadius.y = worldTransform_.scale_.y / 2;
+	enemyRadius.z = worldTransform_.scale_.z / 2;
+
+	return enemyRadius;
 }

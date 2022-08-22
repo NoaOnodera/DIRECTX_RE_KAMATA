@@ -120,3 +120,19 @@ void Player::Attack() {
 		playerBullets_.push_back(std::move(newBullet));
 	}
 }
+
+void Player::OnCollision()
+{
+
+}
+
+Vector3 Player::GetRadius()
+{
+	Vector3 playerRadius;
+
+	playerRadius.x = worldTransform_.scale_.x / 2;
+	playerRadius.y = worldTransform_.scale_.y / 2;
+	playerRadius.z = worldTransform_.scale_.z / 2;
+
+	return playerRadius;
+}

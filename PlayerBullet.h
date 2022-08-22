@@ -14,6 +14,9 @@ public:
 	~PlayerBullet();
 	void Initialize(Model* model, const Vector3& position,const Vector3& velocity);
 	void Update();
+	void OnCollision();
+	Vector3 GetWorldPosition();
+	Vector3 GetRadius();
 	void Draw(const ViewProjection& viewProjection);
 	bool IsDead() const { return isDead_; }
 private:

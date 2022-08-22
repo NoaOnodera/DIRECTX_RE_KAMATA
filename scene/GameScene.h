@@ -13,7 +13,7 @@
 #include "MyMath.h"
 #include "Enemy.h"
 #include"EnemyBullet.h"
-
+#include"Collider.h"
 
 /// <summary>
 /// ゲームシーン
@@ -46,6 +46,8 @@ class GameScene {
 	/// </summary>
 	void Draw();
 
+	void CheckAllCollisions();
+
   private: // メンバ変数
 	DirectXCommon* dxCommon_ = nullptr;
 	Input* input_ = nullptr;
@@ -56,6 +58,7 @@ class GameScene {
 	WorldTransform  worldTransform_;//ワールドトランスフォーム
 	ViewProjection  viewProjection_;//ビュープロジェクション
 	DebugCamera* debugCamera_ = nullptr;//デバックカメラ
+	Collider* collider_ = nullptr;
 	std::unique_ptr<Player>player_;//自キャラ
 	std::unique_ptr<Enemy>enemy_;//敵キャラ
 	std::unique_ptr<EnemyBullet>enemyBullet_;

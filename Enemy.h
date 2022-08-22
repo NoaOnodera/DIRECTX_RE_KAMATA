@@ -32,9 +32,11 @@ public:
 	void LeaveMove();
 	void Fire();
 	void SetPlayer(Player* player) { player_ = player; }
+	void OnCollision();
 	Vector3 GetWorldPosition();
-
-	static const int kFireInterval = 60;//発射感覚
+	Vector3 GetRadius();
+    static const int kFireInterval = 60;//発射感覚
+	const std::list<std::unique_ptr<EnemyBullet>>& GetBullets() { return enemyBullets_; }
 private:
 	WorldTransform worldTransform_;//ワールド変換データ
 
