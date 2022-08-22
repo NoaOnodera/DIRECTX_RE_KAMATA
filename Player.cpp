@@ -39,6 +39,10 @@ void Player::Rotate() {
 }
 void Player::Update() {
 	{
+		playerBullets_.remove_if([](std::unique_ptr<PlayerBullet>& PlayerBullet) {
+			return PlayerBullet->IsDead();
+		});
+
 		Vector3 move = { 0,0,0 };
 
 		const float kCharacterSpeed = 0.2f;
@@ -94,10 +98,13 @@ void Player::Draw(ViewProjection& viewProjection) {
 void Player::Attack() {
 	if (input_->PushKey(DIK_SPACE))
 	{
+		const float kBulletSpeed = 1.0f;
+		Vector3 velocity(0,0,kBulletSpeed);
 		Vector3 position = worldTransform_.translation_;
+		velocity = MathUtility::Vector3TransformNormal(velocity, worldTransform_.matWorld_);
 		//’e‚ğ¶¬‚µA‰Šú‰»
 		std::unique_ptr<PlayerBullet>newBullet = std::make_unique<PlayerBullet>();
-		newBullet->Initialize(model_, worldTransform_.translation_);
+		newBullet->Initialize(model_, worldTransform_.translation_,velocity);
 
 		//’e‚ğ“o˜^‚·‚é
 		playerBullets_.push_back(std::move(newBullet));
