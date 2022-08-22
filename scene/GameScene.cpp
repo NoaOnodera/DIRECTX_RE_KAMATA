@@ -9,7 +9,11 @@
 
 GameScene::GameScene() {}
 
-GameScene::~GameScene() {}
+GameScene::~GameScene() {
+	delete modelSkydome_;
+	delete skydome_;
+	delete debugCamera_;
+}
 
 void GameScene::Initialize() {
 
@@ -19,12 +23,18 @@ void GameScene::Initialize() {
 	debugText_ = DebugText::GetInstance();
 	textureHandle_ = TextureManager::Load("mario.jpg");
 	model_ = Model::Create();
-	debugCamera_ = new DebugCamera(1280,720);
+	modelSkydome_ = Model::CreateFromOBJ("skydome", true);
+	debugCamera_ = new DebugCamera(WinApp::kWindowWidth, WinApp::kWindowHeight);
+	//軸方向表示の表示を有効にする
+	AxisIndicator::GetInstance()->SetVisible(true);
+	//軸方向表示が参照するビュープロジェクションを指定する
+	AxisIndicator::GetInstance()->SetTargetViewProjection(&debugCamera_->GetViewProjection());
 	collider_ = new Collider;
 	worldTransform_.Initialize();//ワールドトランスフォームの初期化
 	viewProjection_.Initialize();//ビュープロジェクションの初期化
 	viewProjection_.eye = { 0,0,-50 };
-
+	skydome_ = new Skydome();
+	skydome_->Initialize(modelSkydome_);
 	player_ = std::make_unique<Player>();
 	enemy_ = std::make_unique<Enemy>();
 	enemy_->SetPlayer(player_.get());
@@ -37,6 +47,7 @@ void GameScene::Update() {
 	
 	player_->Update();//自キャラの更新
 	enemy_->Update();//敵キャラの更新
+	skydome_->Update();
 	debugText_->SetPos(50, 70);
 	debugText_->Printf("eye:(%f,%f,%f)", viewProjection_.eye.x, viewProjection_.eye.y, viewProjection_.eye.z);
 }
@@ -67,6 +78,7 @@ void GameScene::Draw() {
 	/// <summary>
 	/// ここに3Dオブジェクトの描画処理を追加できる
 	/// </summary>
+	skydome_->Draw(viewProjection_);
 	player_->Draw(viewProjection_);//自キャラの描画
 	enemy_->Draw(viewProjection_);//敵キャラの描画
 	// 3Dオブジェクト描画後処理

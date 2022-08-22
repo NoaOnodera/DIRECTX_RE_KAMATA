@@ -12,7 +12,8 @@
 #include "Player.h"
 #include "MyMath.h"
 #include "Enemy.h"
-#include"EnemyBullet.h"
+#include "EnemyBullet.h"
+#include "Skydome.h"
 #include"Collider.h"
 
 /// <summary>
@@ -62,6 +63,8 @@ class GameScene {
 	std::unique_ptr<Player>player_;//自キャラ
 	std::unique_ptr<Enemy>enemy_;//敵キャラ
 	std::unique_ptr<EnemyBullet>enemyBullet_;
+	Skydome* skydome_ = nullptr;
+	Model* modelSkydome_ = nullptr;
 	bool isDebugCameraActive_ = FALSE;
 	/// <summary>
 	/// ゲームシーン用
